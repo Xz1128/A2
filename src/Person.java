@@ -1,4 +1,4 @@
-public class Person {
+public abstract class Person {
     // instance variable
     private String name;
     private int age;
