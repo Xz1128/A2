@@ -20,7 +20,8 @@ public class Ride implements RideInterface {
         this.operator = null;
         this.maxRider = 2;
         this.numOfCycles = 0;
-
+        this.waitingLine = new LinkedList<>();
+        this.rideHistory = new LinkedList<>();
     }
 
     // Parameterized constructor
@@ -30,7 +31,8 @@ public class Ride implements RideInterface {
         this.operator = operator;
         this.maxRider = maxRider;
         this.numOfCycles = 0;
-
+        this.waitingLine = new LinkedList<>();
+        this.rideHistory = new LinkedList<>();
     }
 
     // Getters and Setters
@@ -156,16 +158,48 @@ public class Ride implements RideInterface {
         }
     }
 
-    // Run the ride for one cycle (move visitors from queue to history)
+    // Part 4B
+    public void sortRideHistory(Comparator<Visitor> comparator) {
+        if (rideHistory.size() > 1) {
+            Collections.sort(rideHistory, comparator);
+            System.out.println("Success: Ride history sorted");
+        } else {
+            System.out.println("Info: Not enough visitors to sort");
+        }
+    }
+
+
+    // Part 5
     @Override
     public void runOneCycle() {
-        if (!waitingLine.isEmpty()) {
-            Visitor visitor = waitingLine.poll();
-            addVisitorToHistory(visitor);
-            System.out.println(visitor.getName() + " has taken the ride.");
-        } else {
-            System.out.println("No visitors in the queue to run the ride.");
+        // Check if there is an operator.
+        if (operator == null) {
+            System.out.println("Failure: No operator assigned to the ride. Cannot run.");
+            return;
         }
+
+        // Check if the queue is empty.
+        if (waitingLine.isEmpty()) {
+            System.out.println("Failure: No visitors in the queue. Cannot run.");
+            return;
+        }
+
+        // Calculate the number of tourists that can be carried this time.
+        int visitorsToTake = Math.min(maxRider, waitingLine.size());
+        System.out.println("Running one cycle of " + rideName + ". Taking " + visitorsToTake + " visitors.");
+
+        // Remove from the queue and add to the history record.
+        for (int i = 0; i < visitorsToTake; i++) {
+            Visitor visitor = waitingLine.poll();
+            if (visitor != null) {
+                rideHistory.add(visitor);
+                System.out.println("  - " + visitor.getName() + " has taken the ride");
+            }
+        }
+
+        // Increase the cycle count
+        numOfCycles++;
+        System.out.println("Cycle completed. Total cycles run: " + numOfCycles);
     }
 }
 
