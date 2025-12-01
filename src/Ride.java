@@ -201,6 +201,53 @@ public class Ride implements RideInterface {
         numOfCycles++;
         System.out.println("Cycle completed. Total cycles run: " + numOfCycles);
     }
+
+    // Part 6
+    public void exportRideHistory(String filename) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            for (Visitor visitor : rideHistory) {
+                // format: name,age,id,ticketNumber,membershipLevel
+                writer.println(visitor.getName() + "," +
+                        visitor.getAge() + "," +
+                        visitor.getId() + "," +
+                        visitor.getTicketNumber() + "," +
+                        visitor.getMembershipLevel());
+            }
+            System.out.println("Success: Ride history exported to " + filename);
+        } catch (IOException e) {
+            System.out.println("Failure: Error exporting ride history - " + e.getMessage());
+        }
+    }
+
+    // Part 7
+    public void importRideHistory(String filename) {
+        int importedCount = 0;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 5) {
+                    try {
+                        String name = parts[0];
+                        int age = Integer.parseInt(parts[1]);
+                        String id = parts[2];
+                        String ticketNumber = parts[3];
+                        String membershipLevel = parts[4];
+
+                        Visitor visitor = new Visitor(name, age, id, ticketNumber, membershipLevel);
+                        rideHistory.add(visitor);
+                        importedCount++;
+                    } catch (NumberFormatException e) {
+                        System.out.println("Warning: Skipping invalid line - " + line);
+                    }
+                }
+            }
+            System.out.println("Success: Imported " + importedCount + " visitors from " + filename);
+        } catch (IOException e) {
+            System.out.println("Failure: Error importing ride history - " + e.getMessage());
+        }
+    }
 }
 
 

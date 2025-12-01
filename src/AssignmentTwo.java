@@ -1,5 +1,25 @@
 public class AssignmentTwo {
-    public static void main(String[] args) {}
+    public static void main(String[] args) {
+        AssignmentTwo assignment = new AssignmentTwo();
+
+        System.out.println("=== Part 3 Demonstration ===");
+        assignment.partThree();
+
+        System.out.println("\n=== Part 4A Demonstration ===");
+        assignment.partFourA();
+
+        System.out.println("\n=== Part 4B Demonstration ===");
+        assignment.partFourB();
+
+        System.out.println("\n=== Part 5 Demonstration ===");
+        assignment.partFive();
+
+        System.out.println("\n=== Part 6 Demonstration ===");
+        assignment.partSix();
+
+        System.out.println("\n=== Part 7 Demonstration ===");
+        assignment.partSeven();
+    }
     public void partThree() {
         // Establish facilities and operators
         Employee operator = new Employee("John Operator", 30, "EMP001", "E001", "Ride Operations");
@@ -111,6 +131,35 @@ public class AssignmentTwo {
         carousel.printRideHistory();
     }
 
-    public void partSix() {}
-    public void partSeven() {}
+    public void partSix() {
+        // Establish facilities
+        Ride dropTower = new Ride("Free Fall", "Drop Tower", null, 4);
+
+        // Create a tourist and add to the history record
+        Visitor v1 = new Visitor("Michael", 25, "V101", "T101", "Gold");
+        Visitor v2 = new Visitor("Sarah", 30, "V102", "T102", "Platinum");
+        Visitor v3 = new Visitor("David", 22, "V103", "T103", "Standard");
+        Visitor v4 = new Visitor("Lisa", 28, "V104", "T104", "Gold");
+        Visitor v5 = new Visitor("Kevin", 35, "V105", "T105", "Silver");
+
+        dropTower.addVisitorToHistory(v1);
+        dropTower.addVisitorToHistory(v2);
+        dropTower.addVisitorToHistory(v3);
+        dropTower.addVisitorToHistory(v4);
+        dropTower.addVisitorToHistory(v5);
+
+        // Export to file
+        dropTower.exportRideHistory("ride_history");
+    }
+    public void partSeven() {
+        // Create new facilities (empty)
+        Ride newRide = new Ride("New Adventure", "Adventure Ride", null, 4);
+
+        // Import historical records from the file
+        newRide.importRideHistory("ride_history");
+
+        // Confirm the import results
+        newRide.numberOfVisitors();
+        newRide.printRideHistory();
+    }
 }
